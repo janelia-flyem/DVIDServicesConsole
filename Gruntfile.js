@@ -1,8 +1,40 @@
 module.exports = function(grunt) {
 
-  // Project configuration.
+    // load npm modules at runtime -- cleans up configu file
+    require('jit-grunt')(grunt);
+
+  
+    // Project configuration.
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
+    bootstrap: {
+                dest: 'build',
+      js: [
+              'bootstrap-modal.js'
+          ],
+      css: [
+              'modals.less'
+          ]
+    },
+    less: {
+      build: {
+        options: {
+            paths: ['node_modules/bootstrap/less']
+        },
+        files: { 'build/css/main.css': 'src/less/main.less'}
+      }
+    },
+    cssmin: {
+          build: {
+              files: [{
+                  expand: true,
+                  cwd: 'build/css',
+                  src: ['*.css', '!*.min.css'],
+                  dest: 'build/css',
+                  ext: '.min.css'
+              }]
+          }
+    },
     browserify: {
       options: {
         transform:  [ require('grunt-react').browserify ]
@@ -22,26 +54,25 @@ module.exports = function(grunt) {
       }
     },
     copy: {
-                files: {
-                    src: 'src/index.html',
-                    dest: 'build/index.html'
-                }
+        main: {
+                files: [
+                    {
+                        src: 'src/index.html',
+                        dest: 'build/example.html'
+                    }
+                ]
+        }
     },
     watch: {
       scripts: {
-        files: ['src/js/**/*.js'],
-        tasks: ['browserify', 'uglify']
+        files: ['src/index.html', 'src/js/app.js', 'src/js/**/*.js'],
+        tasks: ['browserify', 'less', 'uglify', 'cssmin', 'copy']
       }
     }
   });
 
-  // Load the plugin that provides the "uglify" task.
-  grunt.loadNpmTasks('grunt-browserify');
-  grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-contrib-copy');
 
   // Default task(s).
-  grunt.registerTask('default', ['browserify','uglify', 'copy']);
+  grunt.registerTask('default', ['browserify', 'less', 'uglify', 'copy', 'cssmin', 'watch']);
 
 };

@@ -1,5 +1,5 @@
-//require('jquery');
-//bs = require('bootstrap');
+jQuery = require('jquery');
+require('bootstrap');
 //var React = require('react');
 //var JSONEditor = require('json-editor');
 require('json-editor');
@@ -39,6 +39,14 @@ var schemadata = '\
                 },\
         "required" : ["dvid-server", "uuid", "label-name", "roi", "graph-name"]\
 }';
+
+// load css
+var filename = "css/main.min.css";
+var fileref=document.createElement("link");
+fileref.setAttribute("rel", "stylesheet");
+fileref.setAttribute("type", "text/css");
+fileref.setAttribute("href", filename);
+document.getElementsByTagName("head")[0].appendChild(fileref);
 
 var element = document.getElementById('editor');
 var editor = new JSONEditor(element, {schema: 
@@ -111,6 +119,6 @@ var editor = new JSONEditor(element, {schema:
         }
         }
         }
-, no_additional_properties: true, disable_edit_json: true, disable_collapse: true, disable_properties: true});
+, theme: 'bootstrap3', iconlib: 'bootstrap3', no_additional_properties: true, disable_edit_json: true, disable_collapse: true, disable_properties: true});
 
 

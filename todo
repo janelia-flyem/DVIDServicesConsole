@@ -2,9 +2,13 @@ X-figure out grunt install
 X-setup basic package with json dep
 X-add bootstrap and other basic stuff
 X-create simple app that just loads form (not really using react) and view in browswer
+X-copy boostrap using less?
+X-include bootstrap style in component render?
 
 
 -reactify component?
 -handle form load (REACT component)
 -handle form commit
--custom validation
+-custom validation (separate window)
+
+
