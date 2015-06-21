@@ -1,9 +1,9 @@
-//"use strict";
+"use strict";
+
+window.$ = window.jQuery = require('jquery');
 
 var JsonForm = require('./components/JsonForm.react');
 
-jQuery = require('jquery');
-$ = jQuery;
 require('bootstrap');
 var React = require('react');
 
@@ -93,10 +93,15 @@ var schemadata =
                 }
         };
 
-$(document).ready(function () {
+function loadInterface() {
     React.render(<JsonForm schema={schemadata} />, document.body);
-});
+}
 
+if (window.addEventListener) {
+    window.addEventListener('DOMContentLoaded', loadInterface);
+} else { 
+    $(document).ready(loadInterface);
+}
 
 
 

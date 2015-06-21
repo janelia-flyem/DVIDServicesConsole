@@ -1,7 +1,8 @@
-//"use strict";
+"use strict";
 
 var React = require('react');
-jQuery = require('jquery');
+
+window.$ = window.jQuery = require('jquery');
 
 /*global JSONEditor */
 require('json-editor');
@@ -14,7 +15,7 @@ var JsonForm = React.createClass({
 
         configdata = { theme: 'bootstrap3', iconlib: 'bootstrap3', no_additional_properties: true, disable_edit_json: true, disable_collapse: true, disable_properties: true};
 
-        jQuery.extend(configdata, this.props.schema);
+        window.jQuery.extend(configdata, this.props.schema);
 
         editorobj = new JSONEditor(element, configdata);
         this.setState({editor: editorobj});
