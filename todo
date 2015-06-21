@@ -4,11 +4,26 @@ X-add bootstrap and other basic stuff
 X-create simple app that just loads form (not really using react) and view in browswer
 X-copy boostrap using less?
 X-include bootstrap style in component render?
+X-reactify component?
+X-js lint
 
 
--reactify component?
--handle form load (REACT component)
--handle form commit
--custom validation (separate window)
+-create select component and take server location
+-create/delete react component in render based on select
+
+-get button/submit component
+-get simple validation for dvid server
+-get complicated validation for submit
+
+-make separate service like calc cluster (query python plugins, submit job, wait for spark id?)
+-test with graph
+-get simple random segmentation working
+-get real segmentation working?
+
+-finish metric services
+
+-make metric web viewer
+
+
 
 

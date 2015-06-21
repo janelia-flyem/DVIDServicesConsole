@@ -63,6 +63,21 @@ module.exports = function(grunt) {
                 ]
         }
     },
+    jslint: {
+        client: {
+            src: [
+                'src/js/app.js',
+                'src/js/components/*.js'
+            ],
+            directives: {
+                node: true,
+                browser: true,
+                predef: [
+                    '$'
+                ]
+            }
+        }
+    },
     watch: {
       scripts: {
         files: ['src/index.html', 'src/js/app.js', 'src/js/**/*.js'],
@@ -74,5 +89,6 @@ module.exports = function(grunt) {
 
   // Default task(s).
   grunt.registerTask('default', ['browserify', 'less', 'uglify', 'copy', 'cssmin', 'watch']);
+  grunt.registerTask('lint', 'Running lint', ['jslint']);
 
 };

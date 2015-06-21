@@ -22,7 +22,8 @@
     "grunt-contrib-copy": "^0.7.0",
     "grunt-contrib-less": "latest",
     "jit-grunt": "latest",
-    "grunt-contrib-cssmin": "latest"
+    "grunt-contrib-cssmin": "latest",
+    "grunt-jslint": "latest"
   },
   "dependencies": {
     "react": "^0.13.3",
