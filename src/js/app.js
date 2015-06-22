@@ -16,14 +16,17 @@ fileref.setAttribute("href", filename);
 document.getElementsByTagName("head")[0].appendChild(fileref);
 
 // sample application to test component
-var serviceloc = "http://127.0.0.1:8000/api/node/5b7/service/key";
+//var serviceloc = "http://127.0.0.1:8000/api/node/5b7/service/key";
 
 /* 
- * Renders component just to the document body.
- * TODO: render to a specified div id with data property
+ * Renders component just to a DIV with DVIDServiceWidget.
 */
 function loadInterface() {
-    React.render(<DVIDServices service={serviceloc} />, document.body);
+    var serviceloc,
+        element = document.getElementById("DVIDServicesWidget");
+    serviceloc = element.getAttribute("data-serviceloc");
+
+    React.render(<DVIDServices service={serviceloc} />, element);
 }
 
 // do not render component until
