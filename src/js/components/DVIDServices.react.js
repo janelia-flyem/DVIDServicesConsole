@@ -34,7 +34,7 @@ var DVIDServices = React.createClass({
         $.getJSON(this.props.service + "/services", this.loadServices);
     },
     changeSchema: function (ev) {
-        if (ev.target.value !== "Choose One") {
+        if (ev.target.value !== "Choose Service") {
             $.getJSON(this.props.service + "/" + ev.target.value, this.loadSchema);
             this.setState({currentService: ev.target.value});
         } else {
@@ -61,8 +61,8 @@ var DVIDServices = React.createClass({
 
         return (
             <div style={{margin: "10px", width: "50%"}}>
-                <select onChange={this.changeSchema}>
-                    <option value="Choose One">Choose One</option>;
+                <select className="form-control" onChange={this.changeSchema}>
+                    <option value="Choose Service">Choose Service</option>;
                     {this.state.services.map(function (val) {
                         return <option key={val} value={val}>{val}</option>;
                     })}   

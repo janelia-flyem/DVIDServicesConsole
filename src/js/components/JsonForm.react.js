@@ -52,7 +52,7 @@ var JsonForm = React.createClass({
         return (
             <div>
                 <div className="jsoneditor" id="editor"></div>
-                <input type="button" value="Submit" onClick={this.handleClick} />
+                <button type="button" className="btn btn-default" onClick={this.handleClick}>Submit </button>
             </div>
         );
     },
