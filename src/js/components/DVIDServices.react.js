@@ -16,6 +16,7 @@ var DVIDServices = React.createClass({
     getInitialState: function () {
         return {
             schema: null,
+            currentService: null,
             services: []
         };
 
@@ -35,9 +36,18 @@ var DVIDServices = React.createClass({
     changeSchema: function (ev) {
         if (ev.target.value !== "Choose One") {
             $.getJSON(this.props.service + "/" + ev.target.value, this.loadSchema);
+            this.setState({currentService: ev.target.value});
         } else {
-            this.setState({schema: null});
+            this.setState({schema: null, currentService: ev.target.value});
         }
+    },
+    postJSON: function (data) {
+        // Send the request
+        alert("Submitted: " + JSON.stringify(data));
+        $.post(this.props.service + "/" + this.state.currentService, JSON.stringify(data), function () {
+            // DO NOTHING
+            return;
+        }, 'json');
     },
     render: function () {
         var formholder, formholder2;
@@ -46,7 +56,7 @@ var DVIDServices = React.createClass({
         if (this.state.schema === null) {
             formholder = <div />;
         } else {
-            formholder = <div><JsonForm ref="editor" schema={this.state.schema} /></div>;
+            formholder = <div><JsonForm ref="editor" schema={this.state.schema} postCallback={this.postJSON} /></div>;
         }
 
         return (

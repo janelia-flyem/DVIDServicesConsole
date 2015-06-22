@@ -21,11 +21,10 @@ var JsonForm = React.createClass({
     },
     initEditor: function (schemadata) {
         var element, configdata, editorobj, schema;
-        
         element = document.getElementById("editor");
-        
+
         // settings for json-editor
-        configdata = { theme: 'bootstrap3', iconlib: 'bootstrap3', no_additional_properties: true, disable_edit_json: true, disable_collapse: true, disable_properties: true};
+        configdata = { theme: 'bootstrap3', iconlib: 'bootstrap3', no_additional_properties: true, disable_edit_json: true, disable_collapse: true, disable_properties: true, required_by_default: true};
 
         schema = {schema: schemadata};
         window.jQuery.extend(configdata, schema);
@@ -39,10 +38,22 @@ var JsonForm = React.createClass({
     componentDidMount: function () {
         this.initEditor(this.props.schema);
     },
+    handleClick: function () {
+        var errors = this.state.editor.validate();
+        if (errors.length > 0) {
+            alert("Validation Fail: " + JSON.stringify(errors, null, 4));
+        } else {
+            //alert(JSON.stringify(this.state.editor.getValue(), null, 4));
+            this.props.postCallback(this.state.editor.getValue());
+        }
+    },
     render: function () {
         // determined the element that anchors the json-editor
         return (
-            <div className="jsoneditor" id="editor"></div>
+            <div>
+                <div className="jsoneditor" id="editor"></div>
+                <input type="button" value="Submit" onClick={this.handleClick} />
+            </div>
         );
     },
     componentWillUnmount: function () {
