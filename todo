@@ -6,12 +6,12 @@ X-copy boostrap using less?
 X-include bootstrap style in component render?
 X-reactify component?
 X-js lint
+X-create select component and take server location
+X-create/delete react component in render based on select
 
-
--create select component and take server location
--create/delete react component in render based on select
 
 -get button/submit component
+?-write json to screen after submission; allow export of json and import of json?
 -get simple validation for dvid server
 -get complicated validation for submit
 
