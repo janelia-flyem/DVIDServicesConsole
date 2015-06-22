@@ -16,9 +16,7 @@ var DVIDServices = React.createClass({
     getInitialState: function () {
         return {
             schema: null,
-            services: [],
-            servicesonline: true,
-            divId: 1 // hack to erase old json-editor div
+            services: []
         };
 
     },
@@ -28,7 +26,8 @@ var DVIDServices = React.createClass({
     },
     // load schema for a given service
     loadSchema: function (data) {
-        this.setState({schema: data, divId: this.state.divId + 1});
+        // props passed to children when re-render occurs
+        this.setState({schema: data});
     },
     componentWillMount: function () {
         $.getJSON(this.props.service + "/services", this.loadServices);
@@ -43,19 +42,11 @@ var DVIDServices = React.createClass({
     render: function () {
         var formholder, formholder2;
 
-        // bad hack to 0 out form, cannot emit information
-        // for JsonForm to update very easily
+        // initialize to no json-editor
         if (this.state.schema === null) {
             formholder = <div />;
-            formholder2 = <div />;
         } else {
-            formholder2 = <div />; 
-            formholder = <div><JsonForm schema={this.state.schema} /></div>;
-            if (this.state.divId % 2 === 0) {
-                var temp = formholder2;
-                formholder2 = formholder;
-                formholder = temp;
-            }
+            formholder = <div><JsonForm ref="editor" schema={this.state.schema} /></div>;
         }
 
         return (
@@ -67,7 +58,6 @@ var DVIDServices = React.createClass({
                     })}   
                 </select>
                 {formholder}
-                {formholder2}
             </div>
         );
     }

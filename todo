@@ -8,12 +8,20 @@ X-reactify component?
 X-js lint
 X-create select component and take server location
 X-create/delete react component in render based on select
+X-set props from parent, call editor destroy to free dom
 
 
+-try simple jasmine (can fake clicks and have mock server)
 -get button/submit component
+
+
+
+
+
 ?-write json to screen after submission; allow export of json and import of json?
 -get simple validation for dvid server
 -get complicated validation for submit
+?-try flux schema update?
 
 -make separate service like calc cluster (query python plugins, submit job, wait for spark id?)
 -test with graph
