@@ -10,15 +10,26 @@ X-create select component and take server location
 X-create/delete react component in render based on select
 X-set props from parent, call editor destroy to free dom
 X-get button/submit component
+X-try simple jasmine
 
 
--try simple jasmine (can fake clicks and have mock server)
+
 
 ?-write json to screen after submission; allow export of json and import of json?
 -get simple validation for dvid server
 -get complicated validation for submit
 ?-try flux schema update?
+-try form submit completed for routing?
 
+-jasmine mock component function, fake clicks
+
+
+-need good feedback from service job (how to improve debugging info from spark??)
+-how to poll server -- should it be a push?
+?-should I have an endpoint for the submitted job (give it an ID) (probably not too useful)
+
+
+-service should email person when job is complete? -- give status (how to get spark job status -- probably from log and probably should be done by dirty hack script -- but define hack interface well so people can reimplement as needed for their environment)
 -make separate service like calc cluster (query python plugins, submit job, wait for spark id?)
 -test with graph
 -get simple random segmentation working

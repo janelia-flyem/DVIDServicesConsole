@@ -7,15 +7,6 @@ module.exports = function(grunt) {
     // Project configuration.
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
-    bootstrap: {
-                dest: 'build',
-      js: [
-              'bootstrap-modal.js'
-          ],
-      css: [
-              'modals.less'
-          ]
-    },
     less: {
       build: {
         options: {
@@ -36,12 +27,23 @@ module.exports = function(grunt) {
           }
     },
     browserify: {
-      options: {
-        transform:  [ require('grunt-react').browserify ]
-      },
       app:          {
+        options: {
+            transform:  [ require('grunt-react').browserify ]
+        },
         src:        'src/js/app.js',
         dest:       'build/js/bundle.js'
+      },
+      specs: {
+        options: {
+            transform:  [ require('grunt-react').browserify ],
+            browserifyOptions: {
+                debug: true,
+                paths: ["./node_modules"]
+            }
+        },
+        src: ["test/specs/*.js"],
+        dest: "test/specs.js"
       }
     },
     uglify: {
@@ -52,6 +54,15 @@ module.exports = function(grunt) {
         src: 'build/js/bundle.js',
         dest: 'build/js/bundle.min.js'
       }
+    },
+    jasmine: {
+        tests: {
+            src: [],
+            options: {
+                outfile: "test/_SpecRunner.html",
+                specs: "test/specs.js"
+            }
+        }
     },
     copy: {
         main: {
@@ -88,7 +99,8 @@ module.exports = function(grunt) {
 
 
   // Default task(s).
-  grunt.registerTask('default', ['browserify', 'less', 'uglify', 'copy', 'cssmin', 'watch']);
+  grunt.registerTask('default', ['browserify:app', 'less', 'uglify', 'copy', 'cssmin', 'watch']);
   grunt.registerTask('lint', 'Running lint', ['jslint']);
+  grunt.registerTask('test', ["browserify:specs", "jasmine"]);
 
 };
