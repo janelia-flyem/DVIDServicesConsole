@@ -11,17 +11,22 @@ X-create/delete react component in render based on select
 X-set props from parent, call editor destroy to free dom
 X-get button/submit component
 X-try simple jasmine
+X-write json to screen after submission; allow export of json and import of json?
 
 
-
-
-?-write json to screen after submission; allow export of json and import of json?
--get simple validation for dvid server
+-jobstatus component -- waiting state, url state
 -get complicated validation for submit
+-email box on top
+
+
+
+
 ?-try flux schema update?
 -try form submit completed for routing?
+-get simple inline validation for dvid server?
 
--jasmine mock component function, fake clicks
+-jasmine: not sure how to stub component functions -- seems like other libraries don't quite work
+-jasmine: fake clicks, factor out functions that should be mocked, mock components
 
 
 -need good feedback from service job (how to improve debugging info from spark??)

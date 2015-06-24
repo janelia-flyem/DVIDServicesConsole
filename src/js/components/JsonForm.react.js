@@ -29,10 +29,15 @@ var JsonForm = React.createClass({
         schema = {schema: schemadata};
         window.jQuery.extend(configdata, schema);
         editorobj = new JSONEditor(element, configdata);
+        if (this.props.initialData !== null) {
+            editorobj.setValue(this.props.initialData);
+        }
         this.setState({editor: editorobj});
     },
     componentWillReceiveProps: function (nextProps) {
-        this.state.editor.destroy();
+        if (this.state.editor !== null) {
+            this.state.editor.destroy();
+        }
         this.initEditor(nextProps.schema);
     },
     componentDidMount: function () {
