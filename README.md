@@ -1,4 +1,5 @@
-# DVIDServicesConsole [![Picture](https://raw.github.com/janelia-flyem/janelia-flyem.github.com/master/images/gray_janelia_logo.png)](http://janelia.org/)
+# DVIDServicesConsole [![Picture](https://raw.github.com/janelia-flyem/janelia-flyem.github.com/master/images/HHMI_Janelia_Color_Alternate_180x40.png)](http://www.janelia.org)
+
 ##Web front-end for submitting Spark batch services that run on DVID
 
 This front-end parses JSON schema that describes different Spark-based services.  The interface allows a user to
