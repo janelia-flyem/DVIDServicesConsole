@@ -12,13 +12,14 @@ X-set props from parent, call editor destroy to free dom
 X-get button/submit component
 X-try simple jasmine
 X-write json to screen after submission; allow export of json and import of json?
+X-jobstatus component -- waiting state, url state
 
 
--jobstatus component -- waiting state, url state
 -get complicated validation for submit
 -email box on top
-
-
+-complicated job status (all within status component)
+-small cleanup (position divs better, use modals?)
+-refactor code
 
 
 ?-try flux schema update?

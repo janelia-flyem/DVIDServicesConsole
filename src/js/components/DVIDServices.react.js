@@ -3,6 +3,7 @@
 var React = require('react');
 
 var JsonForm = require('./JsonForm.react');
+var JobStatus = require('./JobStatus.react');
 
 var serviceListURI = "/services";
 
@@ -21,6 +22,9 @@ var DVIDServices = React.createClass({
             currentService: null,
             schemaResults: null,
             submitted: false,
+            sparkAddr: null,
+            jobCallback: null,
+            jobLaunchError: false,
             services: []
         };
 
@@ -46,16 +50,21 @@ var DVIDServices = React.createClass({
         }
     },
     handleResubmit: function () {
-        this.setState({submitted: false});
+        this.setState({submitted: false, jobLaunchError: false, sparkAddr: null, jobCallback: null});
     },
     postJSON: function (data) {
         // send the request
         this.setState({submitted: true, schemaResults: data});
-        //alert("Submitted: " + JSON.stringify(data));
-        $.post(this.props.service + "/" + this.state.currentService, JSON.stringify(data), function () {
-            // DO NOTHING
-            return;
-        }, 'json');
+        $.post(this.props.service + "/" + this.state.currentService,
+                JSON.stringify(data), function (data) {
+            data = JSON.parse(data);
+            if (data) {
+                this.setState({jobCallback: data.jobCallback, sparkAddr: data.sparkAddr});
+            } else {
+                // TODO: actually call AJAX error
+                this.setState({jobLaunchError: true});
+            }
+        }.bind(this));
     },
     render: function () {
         var formholder, formholder2, formcolumn;
@@ -71,7 +80,7 @@ var DVIDServices = React.createClass({
             }
 
             formcolumn = (
-                    <div style={{margin: "10px", width: "50%"}}>
+                    <div>
                     <select className="form-control" onChange={this.changeSchema}>
                     <option value="Choose Service">Choose Service</option>;
                     {this.state.services.map(function (val) {
@@ -83,7 +92,7 @@ var DVIDServices = React.createClass({
                    );
         } else { // load resulting widget
             formcolumn = (
-                    <div style={{margin: "10px", width: "50%"}}>
+                    <div>
                     <label>Submitted JSON</label><br />
                     <button type="button" className="btn btn-default" onClick={this.handleResubmit}>Relaunch Service</button>
                     <pre>{JSON.stringify(this.state.schemaResults, null, 4)}</pre>
@@ -91,12 +100,49 @@ var DVIDServices = React.createClass({
             );
         }
 
-        return (
-            <tr>
-            <td>{formcolumn}</td>
-            <td></td>
-            </tr>
-        );
+        if (!this.state.submitted) {
+            return (
+                    <div className="container-fluid">
+                        <div className="row">
+                            <div className="col-md-6">{formcolumn}</div>
+                        </div>
+                    </div>
+                   );
+        } else {
+            var statusComponent;
+
+            if (this.state.jobLaunchError) {
+                statusComponent = (
+                        <div className="alert alert-danger" role="alert">
+                        <span className="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                        <span className="sr-only">Error:</span>
+                        Job submission did not succeed
+                        </div>
+                        );
+            } else if (this.state.sparkAddr) {
+                statusComponent = (
+                        <JobStatus sparkAddr={this.state.sparkAddr} />
+                    );
+            } else {
+                statusComponent = (
+                        <div style={{margin: "10px"}}>
+                        <button className="btn btn-lg btn-warning">
+                        <span className="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span> Launching Job...    
+                        </button> 
+                        </div>
+                    );
+            }
+
+            return (
+                    <div className="container-fluid">
+                        <div className="row">
+                            <div className="col-md-6">{formcolumn}</div>
+                            <div className="col-md-6">{statusComponent}</div>
+                        </div>
+                    </div>
+                );
+
+        }
     }
 });
 

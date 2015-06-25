@@ -70,7 +70,14 @@ module.exports = function(grunt) {
                     {
                         src: 'src/index.html',
                         dest: 'build/example.html'
+                    },
+                    {
+                        expand: "true",
+                        cwd: 'node_modules/bootstrap/',
+                        src: 'fonts/*',
+                        dest: 'build/'
                     }
+                
                 ]
         }
     },
