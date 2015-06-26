@@ -18,6 +18,7 @@ X-jobstatus component -- waiting state, url state
 -get complicated validation for submit
 -email box on top
 -complicated job status (all within status component)
+
 -small cleanup (position divs better, use modals?)
 -refactor code
 

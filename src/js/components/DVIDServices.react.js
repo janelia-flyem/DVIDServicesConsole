@@ -57,6 +57,7 @@ var DVIDServices = React.createClass({
         this.setState({submitted: true, schemaResults: data});
         $.post(this.props.service + "/" + this.state.currentService,
                 JSON.stringify(data), function (data) {
+            //data = '{"sparkAddr": "blah1", "jobCallback": "' + this.props.service + '/jobstatus"}';
             data = JSON.parse(data);
             if (data) {
                 this.setState({jobCallback: data.jobCallback, sparkAddr: data.sparkAddr});
@@ -121,7 +122,7 @@ var DVIDServices = React.createClass({
                         );
             } else if (this.state.sparkAddr) {
                 statusComponent = (
-                        <JobStatus sparkAddr={this.state.sparkAddr} />
+                        <JobStatus sparkAddr={this.state.sparkAddr} jobCallback={this.state.jobCallback} />
                     );
             } else {
                 statusComponent = (
