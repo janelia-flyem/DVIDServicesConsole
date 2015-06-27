@@ -21,6 +21,7 @@ X-jobstatus component -- waiting state, url state
 
 -small cleanup (position divs better, use modals?)
 -refactor code
+-add RAML /interface path to front-end
 
 
 ?-try flux schema update?

@@ -6,6 +6,7 @@ var JsonForm = require('./JsonForm.react');
 var JobStatus = require('./JobStatus.react');
 
 var serviceListURI = "/services";
+var serviceURI = "/service";
 
 /*
  * Master component that allows a user to select a
@@ -43,7 +44,7 @@ var DVIDServices = React.createClass({
     },
     changeSchema: function (ev) {
         if (ev.target.value !== "Choose Service") {
-            $.getJSON(this.props.service + "/" + ev.target.value, this.loadSchema);
+            $.getJSON(this.props.service + serviceURI + "/" + ev.target.value, this.loadSchema);
             this.setState({schemaResults: null, currentService: ev.target.value});
         } else {
             this.setState({schemaResults: null, schema: null, currentService: ev.target.value});
@@ -55,7 +56,7 @@ var DVIDServices = React.createClass({
     postJSON: function (data) {
         // send the request
         this.setState({submitted: true, schemaResults: data});
-        $.post(this.props.service + "/" + this.state.currentService,
+        $.post(this.props.service + serviceURI + "/" + this.state.currentService,
                 JSON.stringify(data), function (data) {
             //data = '{"sparkAddr": "blah1", "jobCallback": "' + this.props.service + '/jobstatus"}';
             data = JSON.parse(data);
@@ -104,6 +105,7 @@ var DVIDServices = React.createClass({
         if (!this.state.submitted) {
             return (
                     <div className="container-fluid">
+                        <h1>DVID Services Console</h1>
                         <div className="row">
                             <div className="col-md-6">{formcolumn}</div>
                         </div>
@@ -136,6 +138,7 @@ var DVIDServices = React.createClass({
 
             return (
                     <div className="container-fluid">
+                        <h1>DVID Services Console</h1>
                         <div className="row">
                             <div className="col-md-6">{formcolumn}</div>
                             <div className="col-md-6">{statusComponent}</div>
