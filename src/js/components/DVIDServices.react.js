@@ -63,7 +63,7 @@ var DVIDServices = React.createClass({
             if (data) {
                 this.setState({jobCallback: data.jobCallback, sparkAddr: data.sparkAddr});
             } else {
-                // TODO: actually call AJAX error
+                // TODO: actually call AJAX error ?!
                 this.setState({jobLaunchError: true});
             }
         }.bind(this));

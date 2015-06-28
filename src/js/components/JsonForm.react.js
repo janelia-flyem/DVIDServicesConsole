@@ -82,39 +82,44 @@ var JsonForm = React.createClass({
         var name_path = [];
         grabPathsToDVIDNames(this.props.schema, name_path, dvid_servers);
 
-        // set the number of outstanding validations so
-        // that the form can wait until all requests are done
-        this.setState({validationReqs: dvid_servers.length + this.state.validationReqs});
-        this.state.editor.disable();
+        if (dvid_servers.length == 0) {
+            this.props.postCallback(this.state.editor.getValue());
+        } else {
+            // set the number of outstanding validations so
+            // that the form can wait until all requests are done
+            this.setState({validationReqs: dvid_servers.length + this.state.validationReqs});
 
-        // iterate data and check different endpoints
-        for (var iter in dvid_servers) {
-            var server_name = formdata,
-                schema_path = dvid_servers[iter];
+            this.state.editor.disable();
+            // iterate data and check different endpoints
+            for (var iter in dvid_servers) {
+                var server_name = formdata,
+                    schema_path = dvid_servers[iter];
 
-            // grab object that points to dvid server
-            for (var iter2 in schema_path) {
-                server_name = server_name[schema_path[iter2]];
-            }
-
-            var serverport = server_name.split(':');
-            var server = serverport[0];
-            var portnum = 80;
-            if (serverport.length > 1) {
-                portnum = serverport[1];
-            }
-            dvid.connect({host: server, port: portnum})
-       
-            // ?! error handle DVID response, re-enable button
-            dvid.serverInfo(function (data) {
-                //alert(JSON.stringify(data));
-                
-                if (this.state.validationReqs == 1) {
-                    this.props.postCallback(this.state.editor.getValue());
-                    this.state.editor.enable();
+                // grab object that points to dvid server
+                for (var iter2 in schema_path) {
+                    server_name = server_name[schema_path[iter2]];
                 }
-                this.setState({validationReqs: this.state.validationReqs-1});
-            }.bind(this));
+
+                var serverport = server_name.split(':');
+                var server = serverport[0];
+                var portnum = 80;
+                if (serverport.length > 1) {
+                    portnum = serverport[1];
+                }
+                dvid.connect({host: server, port: portnum})
+
+                    // ?! error handle DVID response, re-enable button
+                    dvid.serverInfo(function (data) {
+                        //alert(JSON.stringify(data));
+
+                        if (this.state.validationReqs == 1) {
+                            this.props.postCallback(this.state.editor.getValue());
+                            this.state.editor.enable();
+                        }
+                        this.setState({validationReqs: this.state.validationReqs-1});
+                    }.bind(this));
+
+            }
         }
     },
     render: function () {

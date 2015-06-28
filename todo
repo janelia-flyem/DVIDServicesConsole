@@ -17,11 +17,13 @@ X-jobstatus component -- waiting state, url state
 
 -get complicated validation for submit
 -email box on top
--complicated job status (all within status component)
-
--small cleanup (position divs better, use modals?)
--refactor code
+-better error handling
 -add RAML /interface path to front-end
+-small cleanup (position divs better, use modals?)
+
+
+-refactor code
+-complicated job status (all within status component)
 
 
 ?-try flux schema update?
