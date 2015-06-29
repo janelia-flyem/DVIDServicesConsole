@@ -23,7 +23,6 @@ var DVIDServices = React.createClass({
             currentService: null,
             schemaResults: null,
             submitted: false,
-            sparkAddr: null,
             jobCallback: null,
             jobLaunchError: false,
             services: []
@@ -51,17 +50,15 @@ var DVIDServices = React.createClass({
         }
     },
     handleResubmit: function () {
-        this.setState({submitted: false, jobLaunchError: false, sparkAddr: null, jobCallback: null});
+        this.setState({submitted: false, jobLaunchError: false, jobCallback: null});
     },
     postJSON: function (data) {
         // send the request
         this.setState({submitted: true, schemaResults: data});
         $.post(this.props.service + serviceURI + "/" + this.state.currentService,
-                JSON.stringify(data), function (data) {
-            //data = '{"sparkAddr": "blah1", "jobCallback": "' + this.props.service + '/jobstatus"}';
-            data = JSON.parse(data);
-            if (data) {
-                this.setState({jobCallback: data.jobCallback, sparkAddr: data.sparkAddr});
+                JSON.stringify(data), function (dataret) {
+            if (dataret) {
+                this.setState({jobCallback: dataret.callBack});
             } else {
                 // TODO: actually call AJAX error ?!
                 this.setState({jobLaunchError: true});
@@ -122,9 +119,9 @@ var DVIDServices = React.createClass({
                         Job submission did not succeed
                         </div>
                         );
-            } else if (this.state.sparkAddr) {
+            } else if (this.state.jobCallback != null) {
                 statusComponent = (
-                        <JobStatus sparkAddr={this.state.sparkAddr} jobCallback={this.state.jobCallback} />
+                        <JobStatus jobCallback={this.state.jobCallback} />
                     );
             } else {
                 statusComponent = (
