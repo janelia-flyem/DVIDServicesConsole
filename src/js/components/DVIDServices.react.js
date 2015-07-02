@@ -25,6 +25,7 @@ var DVIDServices = React.createClass({
             submitted: false,
             jobCallback: null,
             jobLaunchError: false,
+            jobErrorMessage: "",
             services: []
         };
 
@@ -55,15 +56,22 @@ var DVIDServices = React.createClass({
     postJSON: function (data) {
         // send the request
         this.setState({submitted: true, schemaResults: data});
-        $.post(this.props.service + serviceURI + "/" + this.state.currentService,
-                JSON.stringify(data), function (dataret) {
-            if (dataret) {
-                this.setState({jobCallback: dataret.callBack});
-            } else {
-                // TODO: actually call AJAX error ?!
-                this.setState({jobLaunchError: true});
-            }
-        }.bind(this));
+
+        $.ajax({
+            type: "POST",
+            url: this.props.service + serviceURI + "/" + this.state.currentService,
+            data: JSON.stringify(data),
+            success: function (dataret) {
+                if (dataret) {
+                    this.setState({jobCallback: dataret.callBack});
+                } 
+            }.bind(this),
+            error: function (dataret) {
+                this.setState({jobLaunchError: true, jobErrorMessage: dataret});
+            }.bind(this),
+            dataType: "json"
+        });
+        
     },
     render: function () {
         var formholder, formholder2, formcolumn;
@@ -116,7 +124,7 @@ var DVIDServices = React.createClass({
                         <div className="alert alert-danger" role="alert">
                         <span className="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                         <span className="sr-only">Error:</span>
-                        Job submission did not succeed
+                        Failed submission: {this.state.jobErrorMessage}
                         </div>
                         );
             } else if (this.state.jobCallback != null) {

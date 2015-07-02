@@ -19,6 +19,9 @@ X-jobstatus component -- waiting state, url state
 -email box on top
 -better error handling
 -add RAML /interface path to front-end
+-tabify for form, status, help
+-request from 8080 because that has history
+-allow job status to be dumped from website into json
 -small cleanup (position divs better, use modals?)
 
 

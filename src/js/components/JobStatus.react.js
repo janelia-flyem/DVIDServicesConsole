@@ -6,7 +6,7 @@ var JobStatus = React.createClass({
     getInitialState: function () {
         return {
             finished: false,
-            job_status: "Started",
+            job_status: "Waiting",
             job_message: "",
             sparkAddr: ""
         };
