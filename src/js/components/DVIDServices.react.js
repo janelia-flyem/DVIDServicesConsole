@@ -53,7 +53,13 @@ var DVIDServices = React.createClass({
     handleResubmit: function () {
         this.setState({submitted: false, jobLaunchError: false, jobCallback: null});
     },
-    postJSON: function (data) {
+    postJSON: function (data, message) {
+        if (message != null) {
+            // if there is an error message save the current form state but put an error
+            this.setState({jobLaunchError: true, jobErrorMessage: message, schemaResults: data});
+            return;
+        }
+        
         // send the request
         this.setState({submitted: true, schemaResults: data});
 
@@ -67,14 +73,14 @@ var DVIDServices = React.createClass({
                 } 
             }.bind(this),
             error: function (dataret) {
-                this.setState({jobLaunchError: true, jobErrorMessage: dataret});
+                this.setState({jobLaunchError: true, jobErrorMessage: dataret.responseText});
             }.bind(this),
             dataType: "json"
         });
         
     },
     render: function () {
-        var formholder, formholder2, formcolumn;
+        var formholder, formholder2, formcolumn, errorholder;
 
         // TODO: convert this to the default route
         // load services submission selection and forms widgets
@@ -86,6 +92,18 @@ var DVIDServices = React.createClass({
                 formholder = <div><JsonForm ref="editor" initialData={this.state.schemaResults} schema={this.state.schema} postCallback={this.postJSON} /></div>;
             }
 
+            if (this.state.jobLaunchError) {
+                errorholder = (
+                        <div className="alert alert-danger" role="alert">
+                        <span className="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                        <span className="sr-only">Error:</span>
+                        Failed submission: {this.state.jobErrorMessage}
+                        </div>
+                        );
+            } else {
+                errorholder = <div />;
+            }
+
             formcolumn = (
                     <div>
                     <select className="form-control" onChange={this.changeSchema}>
@@ -95,6 +113,7 @@ var DVIDServices = React.createClass({
                                                             })}   
                     </select>
                     {formholder}
+                    {errorholder}
                     </div>
                    );
         } else { // load resulting widget

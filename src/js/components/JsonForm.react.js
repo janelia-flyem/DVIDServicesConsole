@@ -42,7 +42,7 @@ var JsonForm = React.createClass({
             validationReqs: 0
         };
     },
-    initEditor: function (schemadata) {
+    initEditor: function (schemadata, initial_data) {
         var element, configdata, editorobj, schema;
         element = document.getElementById("editor");
 
@@ -52,8 +52,9 @@ var JsonForm = React.createClass({
         schema = {schema: schemadata};
         window.jQuery.extend(configdata, schema);
         editorobj = new JSONEditor(element, configdata);
-        if (this.props.initialData !== null) {
-            editorobj.setValue(this.props.initialData);
+
+        if (initial_data !== null) {
+            editorobj.setValue(initial_data);
         }
         this.setState({editor: editorobj});
     },
@@ -61,10 +62,10 @@ var JsonForm = React.createClass({
         if (this.state.editor !== null) {
             this.state.editor.destroy();
         }
-        this.initEditor(nextProps.schema);
+        this.initEditor(nextProps.schema, nextProps.initialData);
     },
     componentDidMount: function () {
-        this.initEditor(this.props.schema);
+        this.initEditor(this.props.schema, this.props.initialData);
     },
     handleClick: function () {
         var formdata,
@@ -73,6 +74,7 @@ var JsonForm = React.createClass({
             alert("Validation Fail: " + JSON.stringify(errors, null, 4));
             return;
         } 
+        this.setState({failedCheck: false});
         
         // JSON object 
         formdata = this.state.editor.getValue();
@@ -83,7 +85,7 @@ var JsonForm = React.createClass({
         grabPathsToDVIDNames(this.props.schema, name_path, dvid_servers);
 
         if (dvid_servers.length == 0) {
-            this.props.postCallback(this.state.editor.getValue());
+            this.props.postCallback(this.state.editor.getValue(), null);
         } else {
             // set the number of outstanding validations so
             // that the form can wait until all requests are done
@@ -106,19 +108,28 @@ var JsonForm = React.createClass({
                 if (serverport.length > 1) {
                     portnum = serverport[1];
                 }
-                dvid.connect({host: server, port: portnum})
-
-                    // ?! error handle DVID response, re-enable button
-                    dvid.serverInfo(function (data) {
-                        //alert(JSON.stringify(data));
-
-                        if (this.state.validationReqs == 1) {
-                            this.props.postCallback(this.state.editor.getValue());
-                            this.state.editor.enable();
+                var dvid_connection = dvid.connect({host: server, port: portnum});
+                dvid_connection.serverInfo({
+                    callback: function (data) {
+                        if (!this.state.failedCheck && this.state.validationReqs == 1) {
+                            this.props.postCallback(this.state.editor.getValue(), null);
+                            
+                            // don't need to re-enable since form will be destroyed
+                            //this.state.editor.enable(); 
+                        } else {
+                            this.setState({validationReqs: this.state.validationReqs-1});
                         }
-                        this.setState({validationReqs: this.state.validationReqs-1});
-                    }.bind(this));
-
+                    }.bind(this),
+                    error: function (err) {
+                        this.props.postCallback(this.state.editor.getValue(),
+                            "Incorrect DVID server specified");
+                        this.state.editor.enable();
+                        this.setState({
+                            failedCheck: true,
+                            validationReqs: this.state.validationReqs-1        
+                        });
+                    }.bind(this)
+                });
             }
         }
     },
