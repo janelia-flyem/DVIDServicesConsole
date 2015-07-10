@@ -4,6 +4,8 @@ var React = require('react');
 
 var JsonForm = require('./JsonForm.react');
 var JobStatus = require('./JobStatus.react');
+var Help = require('./Help.react');
+window.$ = window.jQuery = require('jquery');
 
 var serviceListURI = "/services";
 var serviceURI = "/service";
@@ -80,8 +82,19 @@ var DVIDServices = React.createClass({
         
     },
     render: function () {
-        var formholder, formholder2, formcolumn, errorholder;
+        var formholder, formholder2, formcolumn, errorholder, main_tab;
 
+        // add tabs for (job submission/status, help)
+
+        // help tab
+        var help_tab = (
+                <div className="container-fluid">
+                    <Help address={this.props.service} />;
+                </div>
+            );
+
+        // main tab
+        
         // TODO: convert this to the default route
         // load services submission selection and forms widgets
         if (!this.state.submitted) {
@@ -109,8 +122,8 @@ var DVIDServices = React.createClass({
                     <select className="form-control" onChange={this.changeSchema}>
                     <option value="Choose Service">Choose Service</option>;
                     {this.state.services.map(function (val) {
-                                                                return <option key={val} value={val}>{val}</option>;
-                                                            })}   
+                        return <option key={val} value={val}>{val}</option>;
+                    })}   
                     </select>
                     {formholder}
                     {errorholder}
@@ -127,9 +140,8 @@ var DVIDServices = React.createClass({
         }
 
         if (!this.state.submitted) {
-            return (
+            main_tab = (
                     <div className="container-fluid">
-                        <h1>DVID Services Console</h1>
                         <div className="row">
                             <div className="col-md-6">{formcolumn}</div>
                         </div>
@@ -160,9 +172,8 @@ var DVIDServices = React.createClass({
                     );
             }
 
-            return (
+            main_tab =  (
                     <div className="container-fluid">
-                        <h1>DVID Services Console</h1>
                         <div className="row">
                             <div className="col-md-6">{formcolumn}</div>
                             <div className="col-md-6">{statusComponent}</div>
@@ -171,6 +182,31 @@ var DVIDServices = React.createClass({
                 );
 
         }
+
+        return (
+                <div>
+                    <h1>DVID Services Console</h1>
+                    <ul className="nav nav-tabs" role="tablist">
+                        <li role="presentation" className="active">
+                            <a href="#home" aria-controls="home" role="tab" data-toggle="tab">Home</a>
+                        </li>
+                        <li role="presentation">
+                            <a href="#help" aria-controls="help" role="tab" data-toggle="tab">Help</a>
+                        </li>
+                    </ul>
+                    
+                    <div className="tab-content">
+                        <div role="tabpanel" className="tab-pane active" id="home">
+                            {main_tab}
+                        </div>
+                        <div role="tabpanel" className="tab-pane" id="help">
+                            {help_tab}
+                        </div>
+                    </div>
+                </div>
+        );
+
+        // add tabs
     }
 });
 

@@ -77,7 +77,6 @@ module.exports = function(grunt) {
                         src: 'fonts/*',
                         dest: 'build/'
                     }
-                
                 ]
         }
     },
@@ -103,7 +102,6 @@ module.exports = function(grunt) {
       }
     }
   });
-
 
   // Default task(s).
   grunt.registerTask('default', ['browserify:app', 'less', 'uglify', 'copy', 'cssmin', 'watch']);
