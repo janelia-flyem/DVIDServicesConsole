@@ -20,11 +20,13 @@ var JobStatus = React.createClass({
                     this.setState({finished: true,
                         job_status: data.job_status,
                         job_message: data.job_message,
+                        runtime: data.runtime,
                         sparkAddr: ""
                     });
                 } else {
                     this.setState({job_status: data.job_status,
-                        job_message: data.job_message, sparkAddr: data.sparkAddr
+                        job_message: data.job_message, sparkAddr: data.sparkAddr,
+                        runtime: data.runtime
                     });
                 }
             }
@@ -40,14 +42,27 @@ var JobStatus = React.createClass({
         }
     },
     render: function () {
+        // ?! add spark query module
+        var sparkaddresses = <div />
+        if (this.state.sparkAddr != "") {
+            sparkaddresses = (
+                <div>
+                    <h3>Spark Application Status: <a href={this.state.sparkAddr+":4040"}>{this.state.sparkAddr+":4040"}</a></h3>
+                    <h3>Spark Master Status: <a href={this.state.sparkAddr+":8080"}>{this.state.sparkAddr+":8080"}</a></h3>
+                </div>
+            )
+    
+        }
+
         // TODO: add div that communicates with spark and add div for final status
         return (
             <div style={{margin: "10px"}}>
-                <h2>Spark Web Status: <a href={this.state.sparkAddr}>{this.state.sparkAddr}</a></h2>
-            <div />
+                {sparkaddresses}
+                <h3>DVID Server Callback URI: {this.props.jobCallback}</h3>
             <div>
                 <h2>Job State</h2>
                 <h3>{this.state.job_status}</h3>
+                <b>Time Elapsed: {this.state.runtime} seconds</b>
                 <pre>{this.state.job_message}</pre>
             </div>
             </div>
