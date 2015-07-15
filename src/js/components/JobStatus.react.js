@@ -47,24 +47,38 @@ var JobStatus = React.createClass({
         if (this.state.sparkAddr != "") {
             sparkaddresses = (
                 <div>
-                    <h3>Spark Application Status: <a href={this.state.sparkAddr+":4040"}>{this.state.sparkAddr+":4040"}</a></h3>
-                    <h3>Spark Master Status: <a href={this.state.sparkAddr+":8080"}>{this.state.sparkAddr+":8080"}</a></h3>
+                    <h4>Spark Application Status: <a href={this.state.sparkAddr+":4040"}>{this.state.sparkAddr+":4040"}</a></h4>
+                    <h4>Spark Master Status: <a href={this.state.sparkAddr+":8080"}>{this.state.sparkAddr+":8080"}</a></h4>
                 </div>
             )
     
         }
+        
+        var pcolor = "panel-warning";
+        if (this.state.job_status === "Finished") {
+            pcolor = "panel-success";
+        } else if (this.state.job_status === "Error") {
+            pcolor = "panel-danger";
+        }
 
         // TODO: add div that communicates with spark and add div for final status
         return (
-            <div style={{margin: "10px"}}>
-                {sparkaddresses}
-                <h3>DVID Server Callback URI: {this.props.jobCallback}</h3>
             <div>
-                <h2>Job State</h2>
-                <h3>{this.state.job_status}</h3>
-                <b>Time Elapsed: {this.state.runtime} seconds</b>
-                <pre>{this.state.job_message}</pre>
-            </div>
+                <div className="panel panel-info">
+                    <div className="panel-heading">Job Resources</div>
+                    <div className="panel-body">
+                        {sparkaddresses}
+                        <h4>DVID Server Callback URI: {this.props.jobCallback}</h4>
+                    </div>
+                </div>
+                <div className={"panel " + pcolor}>
+                    <div className="panel-heading">Job Status</div>
+                    <div className="panel-body">
+                        <h4>{this.state.job_status}</h4>
+                        <b>Time Elapsed: {this.state.runtime} seconds</b>
+                        <pre className="pre-scrollable">{this.state.job_message}</pre>
+                    </div>
+                </div>
             </div>
         );
     }

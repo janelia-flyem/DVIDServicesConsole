@@ -183,9 +183,14 @@ var DVIDServices = React.createClass({
 
         }
 
+
+        //<a href="#" className="pull-left"><img src="https://raw.github.com/janelia-flyem/janelia-flyem.github.com/master/images/HHMI_Janelia_Color_Alternate_180x40.png" /></a>
+
         return (
-                <div>
-                    <h1>DVID Services Console</h1>
+                <div className="container">
+                    <div className="page-header">
+                    <h1>DVID Services Console <small>Submitting and Monitoring Spark DVID Jobs</small></h1>
+                    </div>
                     <ul className="nav nav-tabs" role="tablist">
                         <li role="presentation" className="active">
                             <a href="#home" aria-controls="home" role="tab" data-toggle="tab">Home</a>
