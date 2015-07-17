@@ -1,6 +1,7 @@
 "use strict";
 
 var React = require('react');
+var SparkStatus = require('./SparkStatus.react');
 
 var JobStatus = React.createClass({
     getInitialState: function () {
@@ -77,6 +78,12 @@ var JobStatus = React.createClass({
                         <h4>{this.state.job_status}</h4>
                         <b>Time Elapsed: {this.state.runtime} seconds</b>
                         <pre className="pre-scrollable">{this.state.job_message}</pre>
+                    </div>
+                </div>
+                 <div className={"panel " + pcolor}>
+                    <div className="panel-heading">Spark Job Details</div>
+                    <div className="panel-body">
+                        <SparkStatus callBack={this.props.jobCallback} /> 
                     </div>
                 </div>
             </div>

@@ -63,7 +63,7 @@ var DVIDServices = React.createClass({
         }
         
         // send the request
-        this.setState({submitted: true, schemaResults: data});
+        this.setState({submitted: true, jobLaunchError: false, schemaResults: data});
 
         $.ajax({
             type: "POST",
