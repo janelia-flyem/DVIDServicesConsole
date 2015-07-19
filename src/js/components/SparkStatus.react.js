@@ -9,7 +9,8 @@ var SparkStatus = React.createClass({
     getInitialState: function () {
         return {
             sparkJobInfo : null,
-            appName : ""
+            appName : "",
+            appId: ""
         };
     },
     findAppName: function(callBack) {
@@ -18,9 +19,10 @@ var SparkStatus = React.createClass({
                 //alert(JSON.stringify(data));
                 // get name for app
                 var appName = data[0].name;
+                var appId = data[0].id;
                 //alert(appName);
                 //var appName = encodeURIComponent(appNameSp)
-                this.setState({appName: appName});
+                this.setState({appName: appName, appId: appId});
             }
         }.bind(this));
     },
@@ -32,7 +34,7 @@ var SparkStatus = React.createClass({
         if (this.state.appName === "") {
             this.findAppName(this.props.callBack);
         } else {
-            var req = '/' + encodeURIComponent(this.state.appName) + '/jobs';
+            var req = '/' + encodeURIComponent(this.state.appId) + '/jobs';
             $.getJSON(this.props.callBack+apiURI+req, 
                     function (data) {
                 if (data) {
