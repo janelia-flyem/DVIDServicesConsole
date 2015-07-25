@@ -22,8 +22,16 @@ var Help = React.createClass({
         });
     },
     render: function() {
+        var github_addr = "https://github.com/janelia-flyem/DVIDServicesConsole";
+
         return (
-            <div><pre>{this.state.ramldata}</pre></div>
+            <div>
+                <h3>For user documentation: <a href={github_addr}>{github_addr}</a></h3>
+
+                <h3>RAML Specification for Job Server</h3>
+
+                <pre>{this.state.ramldata}</pre>
+            </div>
         );
 
     }
