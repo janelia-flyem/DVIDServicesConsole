@@ -9,7 +9,8 @@ var JobStatus = React.createClass({
             finished: false,
             job_status: "Waiting",
             job_message: "",
-            sparkAddr: ""
+            sparkAddr: "",
+            sparkcallback: "",
         };
     },
     checkstatus: function () {
@@ -22,12 +23,13 @@ var JobStatus = React.createClass({
                         job_status: data.job_status,
                         job_message: data.job_message,
                         runtime: data.runtime,
-                        sparkAddr: ""
+                        sparkAddr: "",
+                        sparkcallback: ""
                     });
                 } else {
                     this.setState({job_status: data.job_status,
                         job_message: data.job_message, sparkAddr: data.sparkAddr,
-                        runtime: data.runtime
+                        runtime: data.runtime, sparkcallback: this.props.jobCallback
                     });
                 }
             }
@@ -83,7 +85,7 @@ var JobStatus = React.createClass({
                  <div className={"panel " + pcolor}>
                     <div className="panel-heading">Spark Job Details</div>
                     <div className="panel-body">
-                        <SparkStatus callBack={this.props.jobCallback} /> 
+                        <SparkStatus callBack={this.props.sparkcallback} /> 
                     </div>
                 </div>
             </div>
