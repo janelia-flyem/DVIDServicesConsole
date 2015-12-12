@@ -85,7 +85,7 @@ var JobStatus = React.createClass({
                  <div className={"panel " + pcolor}>
                     <div className="panel-heading">Spark Job Details</div>
                     <div className="panel-body">
-                        <SparkStatus callBack={this.props.sparkcallback} /> 
+                        <SparkStatus callBack={this.state.sparkcallback} /> 
                     </div>
                 </div>
             </div>
