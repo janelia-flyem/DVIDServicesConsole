@@ -55,6 +55,28 @@ var DVIDServices = React.createClass({
     handleResubmit: function () {
         this.setState({submitted: false, jobLaunchError: false, jobCallback: null});
     },
+    handleManSubmit: function () {
+        var value = $("#manualjsontext").val(); 
+        
+        // send the request
+        this.setState({submitted: true, jobLaunchError: false, schemaResults: JSON.parse(value)});
+
+        $.ajax({
+            type: "POST",
+            url: this.props.service + serviceURI + "/" + this.state.currentService,
+            data: value,
+            success: function (dataret) {
+                if (dataret) {
+                    this.setState({jobCallback: dataret.callBack});
+                } 
+            }.bind(this),
+            error: function (dataret) {
+                this.setState({jobLaunchError: true, jobErrorMessage: dataret.responseText});
+            }.bind(this),
+            dataType: "json"
+        });
+        
+    },
     postJSON: function (data, message) {
         if (message != null) {
             // if there is an error message save the current form state but put an error
@@ -82,7 +104,7 @@ var DVIDServices = React.createClass({
         
     },
     render: function () {
-        var formholder, formholder2, formcolumn, errorholder, main_tab;
+        var formholder, manholder, tabentry, formholder2, formcolumn, errorholder, main_tab;
 
         // add tabs for (job submission/status, help)
 
@@ -101,8 +123,44 @@ var DVIDServices = React.createClass({
             // initialize to no json-editor
             if (this.state.schema === null) {
                 formholder = <div />;
+                manholder = <div />;
+                tabentry = <div />;
             } else {
                 formholder = <div><JsonForm ref="editor" initialData={this.state.schemaResults} schema={this.state.schema} postCallback={this.postJSON} /></div>;
+                
+                // allow manually entering JSON 
+                manholder = (
+                        <div>
+                        <label>Enter JSON</label><br />
+                        <form>
+                        <button type="button" className="btn btn-default" onClick={this.handleManSubmit}>Submit</button>
+                        <textarea className="form-control" id="manualjsontext" rows="15"></textarea>
+                        </form>
+                        </div>
+                );
+            
+                tabentry = (
+                    <div>
+                        <ul className="nav nav-tabs" role="tablist">
+                            <li role="presentation" className="active">
+                                <a href="#jsoneform" aria-controls="jsoneform" role="tab" data-toggle="tab">JSON Form</a>
+                            </li>
+                            <li role="presentation">
+                                <a href="#manform" aria-controls="manform" role="tab" data-toggle="tab">Manual JSON</a>
+                            </li>
+                        </ul>
+                        
+                        <div className="tab-content">
+                            <div role="tabpanel" className="tab-pane active" id="jsoneform">
+                                {formholder}
+                            </div>
+                            <div role="tabpanel" className="tab-pane" id="manform">
+                                {manholder}
+                            </div>
+                        </div>
+                    </div>
+                );
+            
             }
 
             if (this.state.jobLaunchError) {
@@ -125,7 +183,9 @@ var DVIDServices = React.createClass({
                         return <option key={val} value={val}>{val}</option>;
                     })}   
                     </select>
-                    {formholder}
+                    
+                    {tabentry}
+                    
                     {errorholder}
                     </div>
                    );
