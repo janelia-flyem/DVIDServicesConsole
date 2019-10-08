@@ -32,6 +32,6 @@
     "bootstrap": "^3.3.4",
     "json-editor": "jdorn/json-editor",
     "dvid": "latest",
-    "jquery": "^2.1.4"
+    "jquery": "^3.4.1"
     }
 }
